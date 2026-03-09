@@ -69,7 +69,7 @@ int main(){
     const double sigma=15.0;
     const double Vmax=50.0;
     const bool bar = true;
-    const int fps=20;
+    const int fps=15;
     const int co_ktora=10;
     // alokacja
     cmp **psi = new cmp*[nx+1];
