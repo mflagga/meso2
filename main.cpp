@@ -14,7 +14,7 @@ void psi_init(cmp **psi, int nx, double A, double sigma, double *x, double xc, d
         }
     }
     for (int i=0;i<=nx;i++){
-        psi[i][0] = A*exp(-sigma*pow(x[i]-xc,2))*exp(iu*p0);
+        psi[i][0] = A*exp(-sigma*pow(x[i]-xc,2))*exp(iu*p0*x[i]);
     }
     psi[0][0]=0.0;
     psi[nx][0]=0.0;
@@ -58,7 +58,7 @@ int main(){
     const double theta=0.5;
     const double xmin=-3.0;
     const double xmax=3.0;
-    const double tmax=1.0;
+    const double tmax=0.5;
     const int nx=150;
     const int nt=2000;
     const double dx=(xmax-xmin)/nx;
@@ -67,9 +67,9 @@ int main(){
     const double p0=10.0;
     const double A=1.76;
     const double sigma=15.0;
-    const double Vmax=5.0;
+    const double Vmax=50.0;
     const bool bar = true;
-    const int fps=30;
+    const int fps=20;
     const int co_ktora=10;
     // alokacja
     cmp **psi = new cmp*[nx+1];

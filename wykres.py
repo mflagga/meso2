@@ -36,7 +36,7 @@ for t in tu:
     plt.axvline(x=xmin,ymin=psimin,ymax=psimax,color='black')
     plt.axvline(x=xmax,ymin=psimin,ymax=psimax,color='black')
     plt.plot(V[:,0],V[:,1],color='black')
-    plt.ylim(psimin,ymax)
+    plt.ylim(psimin,psimax)
     plt.xlim(1.5*xmin,1.5*xmax)
     plt.xlabel(rf'$x$')
     plt.ylabel(rf'$|\Psi|^2$')
