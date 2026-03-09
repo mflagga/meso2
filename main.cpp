@@ -58,8 +58,8 @@ int main(){
     const double theta=0.5;
     const double xmin=-3.0;
     const double xmax=3.0;
-    const double tmax=0.5;
-    const int nx=150;
+    const double tmax=0.7;
+    const int nx=250;
     const int nt=2000;
     const double dx=(xmax-xmin)/nx;
     const double dt=tmax/nt;

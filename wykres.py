@@ -30,12 +30,12 @@ else:
 
 for t in tu:
     mask = dane[:,0]==t
+    plt.plot(V[:,0],V[:,1],color='black')
     plt.plot(dane[mask,1],dane[mask,2])
     #plt.tight_layout()
     plt.title(f't={t:.3f}')
     plt.axvline(x=xmin,ymin=psimin,ymax=psimax,color='black')
     plt.axvline(x=xmax,ymin=psimin,ymax=psimax,color='black')
-    plt.plot(V[:,0],V[:,1],color='black')
     plt.ylim(psimin,psimax)
     plt.xlim(1.5*xmin,1.5*xmax)
     plt.xlabel(rf'$x$')
