@@ -27,7 +27,7 @@ $(DATA): $(EXEC)
 	./$<
 
 # wykreśl
-frames/framesdone.txt: $(DATA) wykres.py
+frames/framesdone.txt: psi.dat misc.dat V.dat wykres.py
 	rm -f frames/frame_*.png
 	rm -f frames/framesdone.txt
 	$(PC) wykres.py
