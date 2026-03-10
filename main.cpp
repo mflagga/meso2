@@ -27,6 +27,12 @@ void init_barrier(cmp *V, double *x, int nx, double Vmax){
     }
 }
 
+void init_ho(cmp *V, int nx, double *x, double k){
+    for (int i=0;i<nx;i++){
+        V[i] = x[i]*x[i]*k;
+    }
+}
+
 void thomas(cmp *nw, cmp *prawa, int n, cmp a, cmp *diag){
     cmp *cprim = new cmp[n-1];
     cmp *dprim = new cmp[n];
@@ -56,9 +62,9 @@ void fillPrawa(cmp *prawa, int N, double dt, double theta, cmp **psi, int n, dou
 
 int main(){
     const double theta=0.5;
-    const double xmin=-3.0;
-    const double xmax=3.0;
-    const double tmax=0.7;
+    const double xmin=-4.0;
+    const double xmax=4.0;
+    const double tmax=1.4;
     const int nx=250;
     const int nt=2000;
     const double dx=(xmax-xmin)/nx;
@@ -69,6 +75,7 @@ int main(){
     const double sigma=15.0;
     const double Vmax=50.0;
     const bool bar = true;
+    double k=30.0;
     const int fps=15;
     const int co_ktora=10;
     // alokacja
@@ -84,6 +91,7 @@ int main(){
     if (bar) init_barrier(V,x,nx,Vmax);
     else {for (int i=0;i<=nx;i++) V[i] = 0.0;}
     for (int n=0;n<=nt;n++) t[n] = n*dt;
+    //init_ho(V,nx,x,k);
     psi_init(psi,nx,A,sigma,x,xc,p0,nt);
     // zmienne do pętli
     cmp *prawa = new cmp[nx-1];
@@ -102,7 +110,7 @@ int main(){
     // zapis 
     ofstream file("psi.dat");
     for (int n=0;n<=nt;n++){
-        if (n%co_ktora==0) {for (int i=0;i<=nx;i++) file<<t[n]<<'\t'<<x[i]<<'\t'<<norm(psi[i][n])<<'\n';}
+        if (n%co_ktora==0) {for (int i=0;i<=nx;i++) file<<t[n]<<'\t'<<x[i]<<'\t'<<real(psi[i][n])<<'\t'<<imag(psi[i][n])<<'\t'<<norm(psi[i][n])<<'\n';}
     }
     file.close();
     // pliki pod przekaz danych
