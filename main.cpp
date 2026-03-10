@@ -62,22 +62,22 @@ void fillPrawa(cmp *prawa, int N, double dt, double theta, cmp **psi, int n, dou
 
 int main(){
     const double theta=0.5;
-    const double xmin=-4.0;
-    const double xmax=4.0;
+    const double xmin=-5.0;
+    const double xmax=5.0;
     const double tmax=1.4;
-    const int nx=250;
+    const int nx=350;
     const int nt=2000;
     const double dx=(xmax-xmin)/nx;
     const double dt=tmax/nt;
     const double xc=-1.0;
-    const double p0=10.0;
+    const double p0=15.0;
     const double A=1.76;
     const double sigma=15.0;
     const double Vmax=50.0;
     const bool bar = true;
     double k=30.0;
-    const int fps=15;
-    const int co_ktora=10;
+    const int fps=30;
+    const int co_ktora=5;
     // alokacja
     cmp **psi = new cmp*[nx+1];
     for (int i=0;i<=nx;i++){
