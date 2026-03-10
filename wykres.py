@@ -31,8 +31,8 @@ else:
 for t in tu:
     mask = dane[:,0]==t
     plt.plot(V[:,0],V[:,1],color='black',label='V')
-    plt.plot(dane[mask,1],dane[mask,2],label='Re',color='blue')
-    plt.plot(dane[mask,1],dane[mask,3],label='Im',color='red')
+    plt.plot(dane[mask,1],dane[mask,2],label='Re',color='blue',linewidth=0.5)
+    plt.plot(dane[mask,1],dane[mask,3],label='Im',color='red',linewidth=0.5)
     plt.plot(dane[mask,1],dane[mask,4],label='Norm',color='green')
     #plt.tight_layout()
     plt.title(f't={t:.3f}')
