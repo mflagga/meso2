@@ -71,8 +71,8 @@ int main(){
     const double dt=tmax/nt;
     const double xc=-1.0;
     const double p0=10.0;
-    const double A=1.76;
     const double sigma=15.0;
+    const double A=sqrt(sigma/M_PI);
     const double Vmax=50.0;
     const bool bar = true;
     double k=30.0;
