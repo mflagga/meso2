@@ -27,7 +27,8 @@ void init_barrier(cmp *V, double *x, int nx, double Vmax){
     }
 }
 
-void init_ho(cmp *V, int nx, double *x, double k){
+void init_ho(cmp *V, int nx, double *x){
+    double k=30.0;
     for (int i=0;i<nx;i++){
         V[i] = x[i]*x[i]*k;
     }
@@ -75,7 +76,6 @@ int main(){
     const double A=sqrt(sigma/M_PI);
     const double Vmax=50.0;
     const bool bar = true;
-    double k=30.0;
     const int fps=20;
     const int co_ktora=8;
     // alokacja
