@@ -1,4 +1,5 @@
 *.dat
 *.out
-frames/*
+frames/*.png
+frames/*.txt
 *.mp4

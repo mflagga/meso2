@@ -64,7 +64,7 @@ int main(){
     const double theta=0.5;
     const double xmin=-5.0;
     const double xmax=5.0;
-    const double tmax=1.4;
+    const double tmax=1.0;
     const int nx=350;
     const int nt=2000;
     const double dx=(xmax-xmin)/nx;
@@ -76,8 +76,8 @@ int main(){
     const double Vmax=50.0;
     const bool bar = true;
     double k=30.0;
-    const int fps=30;
-    const int co_ktora=5;
+    const int fps=20;
+    const int co_ktora=8;
     // alokacja
     cmp **psi = new cmp*[nx+1];
     for (int i=0;i<=nx;i++){
