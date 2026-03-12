@@ -42,7 +42,7 @@ for t in tu:
     plt.xlim(1.5*xmin,1.5*xmax)
     plt.xlabel(rf'$x$')
     plt.legend()
-    plt.ylabel(rf'$|\Psi|^2$')
+    plt.ylabel(rf'$\Psi$')
     #plt.grid(ls=":")
     filename = frame_dir / f"frame_{n:04d}.png"
     n+=1
