@@ -49,3 +49,12 @@ for t in tu:
     plt.savefig(filename)
     plt.clf()
 plt.close()
+
+dane2 = np.loadtxt('Exx.dat')
+
+plt.figure(figsize=(8,6))
+plt.plot(dane2[:,0],dane2[:,1], label=rf'$\left< x \right>$')
+plt.plot(dane2[:,0],dane2[:,2], label=rf'$\Delta x$')
+plt.legend()
+plt.tight_layout()
+plt.savefig('expect.png')

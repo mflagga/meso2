@@ -6,6 +6,10 @@
 using namespace std;
 typedef complex<double> cmp;
 const cmp iu(0,1);
+double H0(double x){return 1.0;}
+double H1(double x){return 2.0*x;}
+double H2(double x){return 4.0*x*x-2.0;}
+double H3(double x){return 8.0*x*x*x-12.0*x;}
 
 void psi_init(cmp **psi, int nx, double A, double sigma, double *x, double xc, double p0, int nt){
     for (int i=0;i<=nx;i++){
@@ -20,6 +24,20 @@ void psi_init(cmp **psi, int nx, double A, double sigma, double *x, double xc, d
     psi[nx][0]=0.0;
 }
 
+void psi_eig(cmp **psi, int nx, int nt, double *x){
+    for (int i=0;i<=nx;i++){
+        for (int n=0;n<=nt;n++){
+            psi[i][n]=0.0;
+        }
+    }
+    int n=0;
+    for (int i=0;i<=nx;i++){
+        psi[i][0] = (1.0/(sqrt(pow(2,n)*tgamma(n+1))))*pow(M_PI,-0.25)*exp(-0.5*x[i]*x[i])*H0(x[i]);
+    }
+    psi[0][0]=0.0;
+    psi[nx][0]=0.0;
+}
+
 void init_barrier(cmp *V, double *x, int nx, double Vmax){
     for (int i=0;i<=nx;i++){
         if (x[i]<= 0.2 && x[i]>=0.0) V[i]=Vmax;
@@ -28,9 +46,9 @@ void init_barrier(cmp *V, double *x, int nx, double Vmax){
 }
 
 void init_ho(cmp *V, int nx, double *x){
-    double k=30.0;
+    double k=40.0;
     for (int i=0;i<nx;i++){
-        V[i] = x[i]*x[i]*k;
+        V[i] = 0.5*x[i]*x[i]*k;
     }
 }
 
@@ -75,7 +93,7 @@ int main(){
     const double sigma=15.0;
     const double A=sqrt(sigma/M_PI);
     const double Vmax=50.0;
-    const bool bar = true;
+    const bool bar = false;
     const int fps=20;
     const int co_ktora=8;
     // alokacja
@@ -91,8 +109,9 @@ int main(){
     if (bar) init_barrier(V,x,nx,Vmax);
     else {for (int i=0;i<=nx;i++) V[i] = 0.0;}
     for (int n=0;n<=nt;n++) t[n] = n*dt;
-    //init_ho(V,nx,x,k);
+    init_ho(V,nx,x);
     psi_init(psi,nx,A,sigma,x,xc,p0,nt);
+    // psi_eig(psi,nx,nt,x);
     // zmienne do pętli
     cmp *prawa = new cmp[nx-1];
     cmp *nw = new cmp[nx-1];
@@ -101,10 +120,20 @@ int main(){
     for (int i=0;i<nx-1;i++){
         diag[i] = 2.0*dx*dx+2.0*iu*dt*theta+2.0*iu*dt*dx*dx*V[i+1]*theta;
     }
+    double expect_x=0.0;
+    double expect_xx=0.0;
+    ofstream Exx("Exx.dat");
     // pętla 
     for (int n=1;n<=nt;n++){
         thomas(nw,prawa,nx-1,-iu*dt*theta,diag);
         for (int i=1;i<nx;i++) psi[i][n] = nw[i-1];
+        for (int i=0;i<=nx;i++){
+            expect_x += norm(psi[i][n])*x[i]*dx;
+            expect_xx += norm(psi[i][n])*x[i]*x[i]*dx;
+        }
+        Exx<<t[n]<<'\t'<<expect_x<<'\t'<<sqrt(abs(expect_xx-expect_x*expect_x))<<'\n';
+        expect_x=0.0;
+        expect_xx=0.0;
         fillPrawa(prawa,nx-1,dt,theta,psi,n,dx,V);
     }
     // zapis 
@@ -140,6 +169,7 @@ int main(){
     delete [] nw;
     delete [] diag;
     delete [] t;
+    Exx.close();
     // return zero
     return 0;
 }

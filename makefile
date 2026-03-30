@@ -7,7 +7,7 @@ PC = python3
 # plik wykonywalny
 EXEC = main.out
 # flagi kompilacji
-CXXFLAGS = -Wall -Wextra -std=c++20
+CXXFLAGS = -Wall -std=c++20
 # biblioteki
 LIBS = -lm
 # pliki źródłowe
@@ -17,7 +17,7 @@ DATA = psi.dat misc.dat fps.dat V.dat
 ANIM = evol.mp4 evol.gif
 FPS = $(shell cat fps.dat)
 
-all: $(ANIM)
+all: evol.mp4
 
 # kompiluj
 $(EXEC): $(SRCS)
@@ -38,8 +38,8 @@ frames/framesdone.txt: psi.dat misc.dat V.dat wykres.py
 evol.mp4: frames/framesdone.txt fps.dat
 	ffmpeg -framerate $(FPS) -i frames/frame_%04d.png -y -loglevel quiet -crf 18 evol.mp4
 	
-evol.gif: frames/framesdone.txt fps.dat
-	ffmpeg -framerate $(FPS) -loglevel quiet -i frames/frame_%04d.png -vf "split[s0][s1];[s0]palettegen=stats_mode=full[p];[s1][p]paletteuse=dither=sierra2_4a" -y frames/evol.gif
+# evol.gif: frames/framesdone.txt fps.dat
+# 	ffmpeg -framerate $(FPS) -loglevel quiet -i frames/frame_%04d.png -vf "split[s0][s1];[s0]palettegen=stats_mode=full[p];[s1][p]paletteuse=dither=sierra2_4a" -y frames/evol.gif
 
 # posprzątaj
 clean: 
