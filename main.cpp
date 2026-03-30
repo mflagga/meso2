@@ -30,9 +30,9 @@ void psi_eig(cmp **psi, int nx, int nt, double *x){
             psi[i][n]=0.0;
         }
     }
-    int n=2;
+    int n=3;
     for (int i=0;i<=nx;i++){
-        psi[i][0] = (1.0/(sqrt(pow(2,n)*tgamma(n+1))))*pow(M_PI,-0.25)*exp(-0.5*x[i]*x[i])*H2(x[i]);
+        psi[i][0] = (1.0/(sqrt(pow(2,n)*tgamma(n+1))))*pow(M_PI,-0.25)*exp(-0.5*x[i]*x[i])*H3(x[i]);
     }
     psi[0][0]=0.0;
     psi[nx][0]=0.0;
@@ -96,8 +96,8 @@ int main(){
     const bool bar = false;
     const int fps=20;
     const int co_ktora=8;
-    const double E0 = 1.0;
-    const double omega_ext = 0.5;
+    const double E0 = 0.0;
+    const double omega_ext = sqrt(40.0);
     // alokacja
     cmp **psi = new cmp*[nx+1];
     for (int i=0;i<=nx;i++){

@@ -20,8 +20,8 @@ frame_dir.mkdir(parents=True, exist_ok=True)
 plt.figure(figsize=(8,6))
 
 n=0
-psimax = max(dane[:,4])
-psimin = min(dane[:,2])
+psimax = 1.0
+psimin = -1.0
 
 if (bar):
     ymax = 1.2*max(psimax,Vmax)
