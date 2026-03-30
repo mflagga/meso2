@@ -45,10 +45,10 @@ void init_barrier(cmp *V, double *x, int nx, double Vmax){
     }
 }
 
-void init_ho(cmp *V, int nx, double *x){
-    double k=40.0;
-    for (int i=0;i<nx;i++){
-        V[i] = 0.5*x[i]*x[i]*k;
+void update_V(cmp *V, int nx, double *x, double t, double E0, double omega_ext) {
+    double k = 40.0;
+    for (int i = 0; i <= nx; i++) {
+        V[i] = 0.5 * k * x[i] * x[i] - E0 * x[i] * sin(omega_ext * t);
     }
 }
 
@@ -83,19 +83,21 @@ int main(){
     const double theta=0.5;
     const double xmin=-5.0;
     const double xmax=5.0;
-    const double tmax=1.0;
+    const double tmax=2.0;
     const int nx=350;
     const int nt=2000;
     const double dx=(xmax-xmin)/nx;
     const double dt=tmax/nt;
-    const double xc=-1.0;
-    const double p0=10.0;
+    const double xc=0.0;
+    const double p0=0.0;
     const double sigma=15.0;
     const double A=sqrt(sigma/M_PI);
     const double Vmax=50.0;
     const bool bar = false;
     const int fps=20;
     const int co_ktora=8;
+    const double E0 = 10.0;
+    const double omega_ext = sqrt(40.0);
     // alokacja
     cmp **psi = new cmp*[nx+1];
     for (int i=0;i<=nx;i++){
@@ -109,7 +111,7 @@ int main(){
     if (bar) init_barrier(V,x,nx,Vmax);
     else {for (int i=0;i<=nx;i++) V[i] = 0.0;}
     for (int n=0;n<=nt;n++) t[n] = n*dt;
-    init_ho(V,nx,x);
+    update_V(V,nx,x,t[0],E0,omega_ext);
     psi_init(psi,nx,A,sigma,x,xc,p0,nt);
     // psi_eig(psi,nx,nt,x);
     // zmienne do pętli
@@ -125,6 +127,8 @@ int main(){
     ofstream Exx("Exx.dat");
     // pętla 
     for (int n=1;n<=nt;n++){
+        update_V(V,nx,x,t[n],E0,omega_ext);
+        for (int i=0;i<nx-1;i++) diag[i] = 2.0*dx*dx + 2.0*iu*dt*theta + 2.0*iu*dt*dx*dx*V[i+1]*theta;
         thomas(nw,prawa,nx-1,-iu*dt*theta,diag);
         for (int i=1;i<nx;i++) psi[i][n] = nw[i-1];
         for (int i=0;i<=nx;i++){
@@ -154,8 +158,13 @@ int main(){
     bar<<'\n';
     misc.close();
     ofstream Vfile("V.dat");
-    for (int i=0;i<=nx;i++){
-        Vfile<<x[i]<<'\t'<<real(V[i])<<'\n';
+    for (int n=0;n<=nt;n++){
+        if (n%co_ktora==0){
+            update_V(V,nx,x,t[n],E0,omega_ext);
+            for (int i=0;i<=nx;i++){
+                Vfile<<t[n]<<'\t'<<x[i]<<'\t'<<real(V[i])<<'\n';
+            }
+        }
     }
     Vfile.close();
     // czystki

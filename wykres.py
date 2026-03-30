@@ -4,7 +4,7 @@ from pathlib import Path
 
 dane = np.loadtxt('psi.dat')
 misc = np.loadtxt('misc.dat')
-V = np.loadtxt('V.dat')
+Vdane = np.loadtxt('V.dat')
 
 xmin = misc[0]
 xmax = misc[1]
@@ -30,7 +30,8 @@ else:
 
 for t in tu:
     mask = dane[:,0]==t
-    plt.plot(V[:,0],V[:,1],color='black',label='V')
+    vmask = Vdane[:,0]==t
+    plt.plot(Vdane[vmask,1],Vdane[vmask,2],color='black',label='V')
     plt.plot(dane[mask,1],dane[mask,2],label='Re',color='blue',linewidth=0.5)
     plt.plot(dane[mask,1],dane[mask,3],label='Im',color='red',linewidth=0.5)
     plt.plot(dane[mask,1],dane[mask,4],label='Norm',color='green')
@@ -56,5 +57,6 @@ plt.figure(figsize=(8,6))
 plt.plot(dane2[:,0],dane2[:,1], label=rf'$\left< x \right>$')
 plt.plot(dane2[:,0],dane2[:,2], label=rf'$\Delta x$')
 plt.legend()
+plt.grid(ls=':')
 plt.tight_layout()
 plt.savefig('expect.png')
