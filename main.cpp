@@ -46,7 +46,7 @@ void init_barrier(cmp *V, double *x, int nx, double Vmax){
 }
 
 void update_V(cmp *V, int nx, double *x, double t, double E0, double omega_ext) {
-    double k = 1.0;
+    double k = 40.0;
     for (int i = 0; i <= nx; i++) {
         V[i] = 0.5 * k * x[i] * x[i] - E0 * x[i] * sin(omega_ext * t);
     }
@@ -83,7 +83,7 @@ int main(){
     const double theta=0.5;
     const double xmin=-5.0;
     const double xmax=5.0;
-    const double tmax=20.0;
+    const double tmax=4.0;
     const int nx=350;
     const int nt=2000;
     const double dx=(xmax-xmin)/nx;
@@ -96,7 +96,7 @@ int main(){
     const bool bar = false;
     const int fps=20;
     const int co_ktora=8;
-    const double E0 = 0.0;
+    const double E0 = 10.0;
     const double omega_ext = sqrt(40.0);
     // alokacja
     cmp **psi = new cmp*[nx+1];
@@ -112,8 +112,8 @@ int main(){
     else {for (int i=0;i<=nx;i++) V[i] = 0.0;}
     for (int n=0;n<=nt;n++) t[n] = n*dt;
     update_V(V,nx,x,t[0],E0,omega_ext);
-    // psi_init(psi,nx,A,sigma,x,xc,p0,nt);
-    psi_eig(psi,nx,nt,x);
+    psi_init(psi,nx,A,sigma,x,xc,p0,nt);
+    // psi_eig(psi,nx,nt,x);
     // zmienne do pętli
     cmp *prawa = new cmp[nx-1];
     cmp *nw = new cmp[nx-1];
